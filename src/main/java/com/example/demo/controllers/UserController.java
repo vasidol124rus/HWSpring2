@@ -12,10 +12,8 @@ import com.example.demo.service.UserService;
 /**
  * Контролер пользователей
  */
-
+//@RestController
 @Controller
-
-@RestController
 public class UserController {
 
     /**
@@ -74,11 +72,22 @@ public class UserController {
         userService.deleteById(id);
         return "redirect:/users";
     }
-    @GetMapping
+    /**
+     * Изменение данных пользователя
+     * @param id идентификатор пользователя
+     * @param model модель для передачи данных в представление
+     * @return представление для изменения данных
+     */
+    @GetMapping("/user-update/{id}")
     public String updateUserForm(@PathVariable("id") Integer id, Model model){
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "user-update";
+    }
+    @PostMapping("/user-update")
+    public String updateUser(@ModelAttribute("user") User user){
+        userService.updateUser(user);
+        return "redirect:/users";
     }
 
 }
